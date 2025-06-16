@@ -1,11 +1,19 @@
 <?php
 
-require_once 'DataSearch.php';
+use App\Search\DataSearch;
+use Symfony\Component\Dotenv\Dotenv;
 
-$pdo = new PDO('mysql:host=localhost;dbname=symfony_avance_test;port=3307', 'root', 'test');
+require_once 'vendor/autoload.php';
+
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/.env', __DIR__.'/.env.local');
 
 $dataSearch = new DataSearch('SELECT * FROM article');
 $articles = $dataSearch->search();
+
+
+\App\Debug\DebugTool::dump($articles);
+\App\Debug\DebugTool::dump('dgffdg');
 
 
 foreach ($articles as $article) {

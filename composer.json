@@ -1,0 +1,19 @@
+{
+    "name": "anthony/studi-workshop-june-2025",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Piou-piou",
+            "email": "pilloud.anthony@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/dotenv": "^7.3"
+    }
+}

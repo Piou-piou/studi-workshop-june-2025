@@ -1,13 +1,18 @@
 <?php
 
+namespace App\Search;
+
+use App\Database\Db;
+use DateTime;
+use PDO;
+use PDOStatement;
+
 class DataSearch
 {
-    private PDO $pdo;
     private array $filters = [];
 
     public function __construct(private string $queryString)
     {
-        $this->pdo = new PDO('mysql:host=localhost;dbname=symfony_avance_test;port=3307', 'root', 'test');
         $this->defineFilters();
     }
 
@@ -15,7 +20,7 @@ class DataSearch
     {
         $this->completeQueryString();
 
-        $query = $this->pdo->prepare($this->queryString);
+        $query = Db::pdo()->prepare($this->queryString);
 
         $this->bindValuesToQuery($query);
 
@@ -39,7 +44,7 @@ class DataSearch
             $filterType = $this->getFilterTypeOrPercentage($value);
 
             $key = $this->getFormattedKey($key);
-            $this->queryString .= $key . ' '.$filterType.' :' . $key;
+            $this->queryString .= $key . ' ' . $filterType . ' :' . $key;
 
             if ($iteration < $filterNumber) {
                 $this->queryString .= ' AND ';
@@ -60,7 +65,7 @@ class DataSearch
                 $value = $value->format('Y-m-d');
             }
 
-            $query->bindValue(':'.$this->getFormattedKey($key), $percentage.$value.$percentage);
+            $query->bindValue(':' . $this->getFormattedKey($key), $percentage . $value . $percentage);
         }
     }
 
@@ -70,7 +75,7 @@ class DataSearch
             return;
         }
 
-        $this->filters = array_filter($_GET, function($key) {
+        $this->filters = array_filter($_GET, function ($key) {
             return str_starts_with($key, 'filter_');
         }, ARRAY_FILTER_USE_KEY);
     }
