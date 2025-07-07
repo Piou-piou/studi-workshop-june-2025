@@ -1,5 +1,6 @@
 <?php
 
+use App\Notification\Notification;
 use App\Search\DataSearch;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Mailer\Transport;
@@ -10,6 +11,11 @@ require_once '../vendor/autoload.php';
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env', __DIR__.'/../.env.local');
+
+const TEMPLATES_ROOT = __DIR__ . '/../templates';
+
+session_start();
+
 
 // récupération articles
 /*$dataSearch = new DataSearch('SELECT * FROM article');
@@ -35,12 +41,16 @@ $mailer = new Mailer($transport);
 
 $mailer->send($email);*/
 
-$email = new Email();
+/*$email = new Email();
 $email->to('pilloud.anthony@gmail.com');
 $email->from('hello@example.com');
 
 $email->subject('Mon sujet');
 $email->text('test');
 
-$mailer->send($email);
+$mailer->send($email);*/
 
+//$notification = new Notification(Notification::SUCCESS, 'Vos informations ont été enregistrées');
+$notification = new Notification(Notification::ERROR, 'Une erreur est survenue');
+
+require_once '../templates/index.php';
